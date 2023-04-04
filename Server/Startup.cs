@@ -20,7 +20,7 @@ namespace CallCenter.Server
             services.AddServerSideBlazor();
             services.AddDbContext<DefaultDbContextQuery>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
-
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Startup>());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
