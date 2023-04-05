@@ -25,10 +25,10 @@ else
 <p>
 @if (states != null && states.Any())
 {
-    foreach (LookupState state in states)
-    {
-            <span>The abbreviation for @state.StateName is @state.StateCode. </span>
-    }
+foreach (LookupState state in states)
+{
+    <span>The abbreviation for @state.StateName is @state.StateCode. </span>
+}
 }
 </p>
 
@@ -49,36 +49,36 @@ else
         </thead>
         <tbody>
             @foreach (var forecast in forecasts)
-    {
-        <tr>
+{
+    <tr>
                     <td>@forecast.Date.ToShortDateString()</td>
                     <td>@forecast.TemperatureC</td>
                     <td>@forecast.TemperatureF</td>
                     <td>@forecast.Summary</td>
                 </tr>
-    }
+}
         </tbody>
     </table>
 }
 
 @code {
-    private LookupState[]? states;
-    private Stopwatch stopwatch = Stopwatch.StartNew();
-    private WeatherForecast[]? forecasts;
+private LookupState[]? states;
+private Stopwatch stopwatch = Stopwatch.StartNew();
+private WeatherForecast[]? forecasts;
 
-    protected override async Task OnInitializedAsync()
-    {
-        try
-        {
-            forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
-            stopwatch.Reset();
-            stopwatch.Start();
-            states = await Http.GetFromJsonAsync<LookupState[]>("LookupState");
-            stopwatch.Stop();
-        }
-        catch (AccessTokenNotAvailableException exception)
-        {
-            exception.Redirect();
-        }
-    }
+protected override async Task OnInitializedAsync()
+{
+try
+{
+    forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+    stopwatch.Reset();
+    stopwatch.Start();
+    states = await Http.GetFromJsonAsync<LookupState[]>("LookupStates");
+    stopwatch.Stop();
+}
+catch (AccessTokenNotAvailableException exception)
+{
+    exception.Redirect();
+}
+}
 }

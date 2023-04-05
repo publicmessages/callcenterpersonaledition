@@ -1,4 +1,4 @@
-using CallCenter.Data;
+﻿using CallCenter.Data;
 using CallCenter.Data.Queries;
 using CallCenter.Shared.Domain;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +7,7 @@ namespace CallCenter.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class LookupStateController : ControllerBase
+public class LookupStateController
 {
     private readonly ILogger<LookupStateController> _logger;
     private readonly DefaultDbContextQuery _context;
@@ -19,11 +19,11 @@ public class LookupStateController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IEnumerable<LookupState>> GetStates()
+    public async Task<LookupState> GetState(string stateCode)
     {
-        _logger.LogInformation("Begin {action} in {controller}", nameof(GetStates), nameof(LookupStateController));
-        GetLookupStates getLookupStates = new(_context);
-        List<LookupState> lookupStates = await getLookupStates.ExecuteAsync();
-        return lookupStates;
+        _logger.LogInformation("Begin {action} in {controller}", nameof(GetState), nameof(LookupStateController));
+        GetLookupState getLookupState = new(stateCode, _context);
+        LookupState? lookupState = await getLookupState.ExecuteAsync();
+        return lookupState ?? new();
     }
 }
