@@ -4,7 +4,7 @@ using CallCenter.Shared.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CallCenter.Server.Controllers.LookupStateGetById;
+namespace CallCenter.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -23,11 +23,10 @@ public class LookupStateController
 
     [HttpGet]
     [Route("{StateCode}")]
-    public async Task<LookupState> GetState(LookupStateRequest request)
+    public async Task<LookupState> GetState(string stateCode)
     {
         _logger.LogInformation("Begin {action} in {controller}", nameof(GetState), nameof(LookupStateController));
-        //var result = await _mediatr.Send(request.StateCode);
-        GetLookupState getLookupState = new(request.StateCode, _context);
+        GetLookupState getLookupState = new(stateCode, _context);
         LookupState? lookupState = await getLookupState.ExecuteAsync();
         return lookupState ?? new();
     }
