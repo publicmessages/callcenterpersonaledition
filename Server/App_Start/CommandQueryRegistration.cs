@@ -7,3 +7,4 @@ public static class CommandQueryRegistration
         return services;
     }
 }
+    

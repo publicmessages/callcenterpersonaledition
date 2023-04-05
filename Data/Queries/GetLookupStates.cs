@@ -1,5 +1,6 @@
 ﻿using CallCenter.Shared.Domain;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace CallCenter.Data.Queries;
 
@@ -13,6 +14,13 @@ public class GetLookupStates
 
     public async Task<List<LookupState>> ExecuteAsync()
     {
-        return await _defaultDbContextQueryReadOnly.LookupStates.ToListAsync();
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        var result = await _defaultDbContextQueryReadOnly.LookupStates.ToListAsync();
+        stopwatch.Stop();
+        if (result != null && result.Any())
+        {
+            result.First().Stopwatch = stopwatch;
+        }
+        return result;
     }
 }
