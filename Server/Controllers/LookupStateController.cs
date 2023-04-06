@@ -24,11 +24,11 @@ public class LookupStateController
 
     [HttpGet]
     [Route("{StateCode}")]
-    public async Task<IResult> GetState(GetStateByStateCodeRequest request)
+    public async Task<IResult> GetState(string stateCode)
     {
         _logger.LogInformation("Begin {action} in {controller}", nameof(GetState), nameof(LookupStateController));
-        GetLookupState getLookupState = new(request.StateCode, _context);
-        LookupState? lookupState = await getLookupState.ExecuteAsync();
+        GetLookupState getLookupState = new(_context);
+        LookupState? lookupState = await getLookupState.ExecuteAsync(stateCode);
         return Results.Ok(new { message = lookupState?.StateName ?? "" });
         //var result = _mediatr.Send(request);
         //return result;

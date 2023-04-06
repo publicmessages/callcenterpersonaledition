@@ -14,8 +14,8 @@ namespace CallCenter.Server.Handlers
         }
         public async Task<IResult> Handle(GetStateByStateCodeRequest request, CancellationToken cancellationToken)
         {
-            Data.Queries.GetLookupState getLookupState = new(request.StateCode, _context);
-            Shared.Domain.LookupState? lookupState = await getLookupState.ExecuteAsync();
+            Data.Queries.GetLookupState getLookupState = new(_context);
+            Shared.Domain.LookupState? lookupState = await getLookupState.ExecuteAsync(request.StateCode);
             return Results.Ok(new { message = "Hola mundo!" });
         }
     }

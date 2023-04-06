@@ -7,17 +7,15 @@ namespace CallCenter.Data.Queries;
 public class GetLookupState
 {
     readonly DefaultDbContextQuery _defaultDbContextQueryReadOnly;
-    readonly string _stateCode;
-    public GetLookupState(string stateCode, DefaultDbContextQuery defaultDbContextQueryReadOnly)
+    public GetLookupState(DefaultDbContextQuery defaultDbContextQueryReadOnly)
     {
-        _stateCode = stateCode;
         _defaultDbContextQueryReadOnly = defaultDbContextQueryReadOnly;
     }
 
-    public async Task<LookupState?> ExecuteAsync()
+    public async Task<LookupState?> ExecuteAsync(string stateCode)
     {
         Stopwatch stopwatch = Stopwatch.StartNew();
-        var result = await _defaultDbContextQueryReadOnly.LookupStates.FirstOrDefaultAsync(x => x.StateCode == _stateCode);
+        var result = await _defaultDbContextQueryReadOnly.LookupStates.FirstOrDefaultAsync(x => x.StateCode == stateCode);
         stopwatch.Stop();
         var timing = stopwatch.ElapsedMilliseconds;
         if (result != null)
@@ -25,5 +23,5 @@ public class GetLookupState
             result.Stopwatch = stopwatch;
         }
         return result;
-    }
+        }
 }

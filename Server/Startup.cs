@@ -1,4 +1,5 @@
 ﻿using CallCenter.Data;
+using CallCenter.Data.Queries;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
@@ -21,6 +22,7 @@ public class Startup
         services.AddDbContext<DefaultDbContextQuery>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddMicrosoftIdentityWebApi(Configuration.GetSection("AzureAd"));
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<Startup>());
+        services.AddScoped<GetLookupState>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
