@@ -1,5 +1,6 @@
 ﻿using CallCenter.Data;
 using CallCenter.Data.Queries;
+using CallCenter.Server.Requests;
 using CallCenter.Shared.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -23,11 +24,13 @@ public class LookupStateController
 
     [HttpGet]
     [Route("{StateCode}")]
-    public async Task<LookupState> GetState(string stateCode)
+    public async Task<IResult> GetState(GetStateByStateCodeRequest request)
     {
         _logger.LogInformation("Begin {action} in {controller}", nameof(GetState), nameof(LookupStateController));
-        GetLookupState getLookupState = new(stateCode, _context);
+        GetLookupState getLookupState = new(request.StateCode, _context);
         LookupState? lookupState = await getLookupState.ExecuteAsync();
-        return lookupState ?? new();
+        return Results.Ok(new { message = lookupState?.StateName ?? "" });
+        //var result = _mediatr.Send(request);
+        //return result;
     }
 }
